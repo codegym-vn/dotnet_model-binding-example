@@ -39,8 +39,7 @@ namespace ModelBindingTest.Controllers
         [HttpPost]
         public IActionResult CreateAndUpdate(Product model)
         {
-            string message = "";
-
+            // string message = "";
             if (ModelState.IsValid)
             {
                 bool isUpdated = false;
@@ -50,7 +49,7 @@ namespace ModelBindingTest.Controllers
                     {
                         product.Brand = model.Brand;
                         product.Description = model.Description;
-                        message = "product " + model.Name + " is updated successfully";
+                        TempData["StatusMessage"] = "product " + model.Name + " is updated successfully";
                         isUpdated = true;
                         break;
                     }
@@ -59,14 +58,14 @@ namespace ModelBindingTest.Controllers
                 if (!isUpdated)
                 {
                     products.Add(model);
-                    message = "product " + model.Name + " created successfully. There're " + products.Count + " products now.";
+                    TempData["StatusMessage"] = "product " + model.Name + " created successfully. There're " + products.Count + " products now.";
                 }
             }
             else
             {
-                message = "Failed to create the product. Please try again";
+                TempData["StatusMessage"] = "Failed to create the product. Please try again";
             }
-            return Content(message);
+            return RedirectToAction(nameof(Index));
         }
     }
 }
